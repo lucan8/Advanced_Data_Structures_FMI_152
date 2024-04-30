@@ -1,4 +1,4 @@
-from Trees import Node, Tree
+from utils.Trees.Tree import Node, Tree
 
 class ScapegoatTree(Tree):
     def search(self, node : int):
