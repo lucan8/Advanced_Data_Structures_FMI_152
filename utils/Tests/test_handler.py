@@ -1,6 +1,6 @@
 from typing import List
-
-
+from utils.Trees.Treap import Treap
+from queue import Queue
 class TestUnit:
     def __init__(self, index: int, array: List[int], length: int, max_value: int):
         self.index = index
@@ -24,4 +24,32 @@ def read_file(path):
                 TestUnit(test_index + 1, array, array_length, max_value))
 
     return final_tests
+
+def verify_Treap(treap : Treap, size: int):
+    assert __isTreap__(treap) is True, "Treap properties violated!"
+
+def __isTreap__(treap : Treap) -> bool:
+    if not treap.root:
+        return True
+    
+    q = Queue()
+    q.put(treap.root)
+
+    while not q.empty():
+        elem = q.get()
+
+        if elem.left:
+            if elem.left.key >= elem.key or elem.left.priority > elem.priority:
+                return False
+            
+            q.put(elem.left)
+        
+        if elem.right:
+            if elem.right.key <= elem.key or elem.right.priority > elem.priority:
+                return False
+            
+            q.put(elem.right)
+
+    return True
+
 
