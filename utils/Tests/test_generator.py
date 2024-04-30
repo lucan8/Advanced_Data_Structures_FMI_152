@@ -9,7 +9,7 @@ class TestConfig:
 
 
 def generate_test(test_name: str, test_configs: List[TestConfig]):
-    print(f"Generating tests for {test_name}")
+    print(f"Generating tests for {test_name}", end="", flush=True)
     path = f"tests/random_generated/{test_name}"
 
     with open(path, "w") as output_file:
@@ -23,3 +23,4 @@ def generate_test(test_name: str, test_configs: List[TestConfig]):
             for num in array:
                 output_file.write(f"{num} ")
             output_file.write("\n")
+    print("(done)")
