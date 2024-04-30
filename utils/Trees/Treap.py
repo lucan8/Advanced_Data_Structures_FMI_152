@@ -1,18 +1,14 @@
-from Trees import Tree, Node
+from utils.Trees.Tree import Tree, Node
 from random import randint
 from enum import IntEnum
 from typing import List, Tuple
 
-#Maybe ask for these arguments in the constrcutor of the treap
-#The nr of possible priorities shall be larger than the number of nodes
-class RANDOM_LIMTIS(IntEnum):
-    MAX_RANDOM : int = 5000000
-    MIN_RANDOM : int = 0
-
 #Unique elements only
 class Treap(Tree):
-    def __init__(self, root : Node = None) -> None:
+    def __init__(self, min_random : int, max_random : int, root : Node = None) -> None:
         self.root = root
+        self.MIN_RANDOM = min_random
+        self.MAX_RANDOM = max_random
 
     def search(self, node : int) -> Node:
         Treap_iterator = self.root
@@ -41,7 +37,7 @@ class Treap(Tree):
         if not del_node: #Node not found so we don't delete
             return False
 
-        del_node.priority = RANDOM_LIMTIS.MIN_RANDOM - 1
+        del_node.priority = self.MIN_RANDOM - 1
 
         #Getting the parent of the node after it's been bubbled down
         parent_del_node = self.__bubbleDownPriority(parent_del_node, del_node)
@@ -73,7 +69,7 @@ class Treap(Tree):
     
     #Returns a stack of all ascendents, and the node that was inserted
     def __BSTInsert(self, node : int) -> Tuple[List[Node], Node]:
-        new_node = Node(node, randint(int(RANDOM_LIMTIS.MIN_RANDOM), int(RANDOM_LIMTIS.MAX_RANDOM)))
+        new_node = Node(node, randint(int(self.MIN_RANDOM), int(self.MAX_RANDOM)))
 
         if not self.root: #If there is no root we create it
             self.root = new_node
