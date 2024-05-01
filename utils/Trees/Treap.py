@@ -1,6 +1,5 @@
 from utils.Trees.Tree import Tree, Node
 from random import randint
-from enum import IntEnum
 from typing import List, Tuple
 
 #Unique elements only
@@ -169,3 +168,13 @@ class Treap(Tree):
             parent_del_node.left = None
         elif parent_del_node.right.key == del_node.key:
             parent_del_node.right = None
+    
+    def getMin(self, root : Node) -> Node:
+        while (root.left):
+            root = root.left
+        return root
+    
+    def getMax(self, root : Node) -> Node:
+        while (root.right):
+            root = root.right
+        return root
