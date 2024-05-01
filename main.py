@@ -1,44 +1,44 @@
-from utils.Trees.Tree import Tree
 from utils.Trees.Treap import Treap
 from utils.Trees.ScapegoatTree import ScapegoatTree
 from utils.Trees.SplayTree import SplayTree
 from utils.Tests import test_generator, test_handler
 from utils.Tests.test_generator import TestConfig
-from time import time
-from typing import List
-
-
-def timer(func):
-    def wrapper(*args, **kwargs):
-        start = time()
-        tree = func(*args, **kwargs)
-        end = time()
-
-        return tree, round(end - start, 2)
-
-    return wrapper
-
-@timer
-def generateTree(tree: Tree, arr: List[int]):
-    for elem in arr:
-        tree.insert(elem)
-    return tree
-
+from utils.functions.functions import blockInsert, blockRemove, blockSearch
 def main():
-    test_generator.generate_test("Treaps_test", [
-        TestConfig(1_000_000, 10_000_000)
-    ])
-    treap_path = "tests/random_generated/Treaps_test"
-    for test in test_handler.read_file(treap_path):
-        #The number of priority possibilites = 10 * max_val
-        treap = Treap(0, 10 * test.length)
-        treap, duration = generateTree(treap, test.array)
+    test_configs_treaps = [
+                            TestConfig(1_000_000, 1_000_000),
+                            TestConfig(1_000_000, 1_000_000_000),
+                            TestConfig(1_000_000, 1_000_000_000_000),
+                            TestConfig(1_000_000, 1_000_000_000_000_000),
+                            TestConfig(1_000_000, 1_000_000_000_000_000_000),
+                            TestConfig(10_000_000, 1_000_000),
+                            TestConfig(10_000_000, 1_000_000_000),
+                            TestConfig(10_000_000, 1_000_000_000_000),
+                            TestConfig(10_000_000, 1_000_000_000_000_000),
+                            #TestConfig(100_000_000, 10_000_000),
+                            #TestConfig(100_000_000, 1_000_000_000),
+                            ]
+    
+    test_generator.generate_test("Treaps/Treaps_insert", test_configs_treaps)
+    test_generator.generate_test("Treaps/Treaps_search", test_configs_treaps)
+    test_generator.generate_test("Treaps/Treaps_remove", test_configs_treaps)
+    
+    treap_insert_path = "tests/random_generated/Treaps/Treaps_insert"
+    treap_search_path = "tests/random_generated/Treaps/Treaps_search"
+    treap_remove_path = "tests/random_generated/Treaps/Treaps_remove"
 
-        try:
-            test_handler.verify_Treap(treap, test.length)
-            print("Treap generation duration:", duration, 'sec')
-        except AssertionError as error:
-            print(f"Treap generation failed: {str(error)}")
+    #TO DO: time the min,max as well
+    for test_i, test_s, test_r in zip(
+                                    test_handler.read_file(treap_insert_path),
+                                    test_handler.read_file(treap_search_path),
+                                    test_handler.read_file(treap_remove_path),
+                                    ):
+        #The number of priority possibilites = 10 * max_size
+        print(f"Test {test_i.index}({test_i.length, test_i.max_value}):")
+        treap = Treap(0, 10 * test_i.length)
+        blockInsert(treap, test_i.array)
+        blockSearch(treap, test_s.array)
+        blockRemove(treap, test_s.array)
 
 
 if __name__ == "__main__":
