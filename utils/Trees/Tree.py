@@ -55,7 +55,7 @@ class Tree:
     @abstractmethod
     def meetsRequirments(self) -> bool:
         ...
-    
+
     @benchmark
     @timer
     def blockSearch(self, arr: List[int]) -> int:

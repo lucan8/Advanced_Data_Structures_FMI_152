@@ -23,4 +23,4 @@ def generate_test(test_name: str, test_configs: List[TestConfig]):
             for num in array:
                 output_file.write(f"{num} ")
             output_file.write("\n")
-    print("(done)")
+    print(" (done)")
