@@ -3,8 +3,8 @@ from random import randint
 from typing import List, Tuple
 from queue import Queue
 
+
 #Unique elements only
-#Add merge and split
 class Treap(Tree):
     def __init__(self, min_random : int, max_random : int, root : Node = None) -> None:
         self.root = root
@@ -218,34 +218,3 @@ class Treap(Tree):
 
         return True
     
-    def splitInsert(self, root : Node,  node : int) -> bool:
-        if node.__class__.__name__ != 'Node':
-            node = Node(node, randint(self.MIN_RANDOM, self.MAX_RANDOM))
-
-        if (not root):
-            root = node
-            return True
-        elif node.priority > root.priority:
-            self.split(root, node.key, node.left, node.right)
-            root = node
-            return True
-        else:
-            if node.key > root.key:
-                self.splitInsert(root.right, node)
-            elif node.key < root.key:
-                self.splitInsert(root.left, node)
-            else:
-                return False
-            
-    #Does not work like c++
-    def split (self, root : Node, key : int, left : Node, right : Node):
-        if (not root):
-            right = None
-            left = None
-        elif (root.key <= key):
-            self.split(root.right, key, root.right, right)
-            left = root
-        else:
-            self.split(root.left, key, left, root.left)
-            right = root
-        
