@@ -1,8 +1,10 @@
 from utils.Trees.Tree import Tree, Node
 from random import randint
 from typing import List, Tuple
+from queue import Queue
 
 #Unique elements only
+#Add merge and split
 class Treap(Tree):
     def __init__(self, min_random : int, max_random : int, root : Node = None) -> None:
         self.root = root
@@ -169,12 +171,81 @@ class Treap(Tree):
         elif parent_del_node.right.key == del_node.key:
             parent_del_node.right = None
     
-    def getMin(self, root : Node) -> Node:
-        while (root.left):
-            root = root.left
-        return root
+    def getMin(self) -> int:
+        Treap_iterator = self.root
+        while (Treap_iterator.left):
+            Treap_iterator = Treap_iterator.left
+        return Treap_iterator.key
     
-    def getMax(self, root : Node) -> Node:
-        while (root.right):
-            root = root.right
-        return root
+    def getMax(self) -> int:
+        Treap_iterator = self.root
+        while (Treap_iterator.right):
+            Treap_iterator = Treap_iterator.right
+        return Treap_iterator.key
+    
+    def getHeight(self, root : Node) -> int:
+        if not root:
+            return 0
+        
+        return 1 + max(self.getHeight(root.right), self.getHeight(root.left))
+    
+    def printTreapInfo(self):
+        print(f"Treap height: {self.getHeight(self.root)}")
+        print(f"Treap min elem: {self.getMin()}")
+        print(f"Treap max elem: {self.getMax()}")
+
+    def meetsRequirments(self):
+        if not self.root:
+            return True
+        
+        q = Queue()
+        q.put(self.root)
+
+        while not q.empty():
+            elem = q.get()
+
+            if elem.left:
+                if elem.left.key >= elem.key or elem.left.priority > elem.priority:
+                    return False
+                
+                q.put(elem.left)
+            
+            if elem.right:
+                if elem.right.key <= elem.key or elem.right.priority > elem.priority:
+                    return False
+                
+                q.put(elem.right)
+
+        return True
+    
+    def splitInsert(self, root : Node,  node : int) -> bool:
+        if node.__class__.__name__ != 'Node':
+            node = Node(node, randint(self.MIN_RANDOM, self.MAX_RANDOM))
+
+        if (not root):
+            root = node
+            return True
+        elif node.priority > root.priority:
+            self.split(root, node.key, node.left, node.right)
+            root = node
+            return True
+        else:
+            if node.key > root.key:
+                self.splitInsert(root.right, node)
+            elif node.key < root.key:
+                self.splitInsert(root.left, node)
+            else:
+                return False
+            
+    #Does not work like c++
+    def split (self, root : Node, key : int, left : Node, right : Node):
+        if (not root):
+            right = None
+            left = None
+        elif (root.key <= key):
+            self.split(root.right, key, root.right, right)
+            left = root
+        else:
+            self.split(root.left, key, left, root.left)
+            right = root
+        
