@@ -180,6 +180,9 @@ class ScapegoatTree(Tree):
         return removed
 
     def meetsRequirments(self):
+        if not (self.max_size // 2 <= self.size and self.size <= self.max_size):
+            return False
+
         if not self.root:
             return True
 
