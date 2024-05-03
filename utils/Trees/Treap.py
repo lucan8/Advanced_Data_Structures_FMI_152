@@ -198,5 +198,4 @@ class Treap(Tree):
         if not self.root:
             return True
 
-        # TODO: also check for priority
-        return self._is_ordered()
+        return self._is_ordered() and self._isMaxHeap(self.root)
