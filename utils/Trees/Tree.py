@@ -48,7 +48,7 @@ class Tree:
         sorted_nodes = []
         self._flatten(self.root, sorted_nodes)
         for i in range(1, len(sorted_nodes)):
-            if sorted_nodes[i].key < sorted_nodes[i - 1].key:
+            if sorted_nodes[i].key <= sorted_nodes[i - 1].key:
                 return False
         return True
     
