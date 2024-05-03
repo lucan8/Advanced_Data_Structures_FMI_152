@@ -37,7 +37,7 @@ class Tree:
     def __init__(self):
         self.root = None
 
-    def _flatten(self, node: Node, nodes):
+    def _flatten(self, node: Node, nodes: List[Node]):
         if node == None:
             return
         self._flatten(node.left, nodes)

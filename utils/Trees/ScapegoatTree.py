@@ -1,5 +1,5 @@
 import math
-from queue import Queue
+from typing import List
 from utils.Trees.Tree import Node, Tree
 
 class GoatNode(Node):
@@ -100,7 +100,7 @@ class ScapegoatTree(Tree):
             scapegoat = scapegoat.parent
         return scapegoat
 
-    def _build_tree_from_list(self, nodes, start: int, end: int):
+    def _build_tree_from_list(self, nodes: List[GoatNode], start: int, end: int):
         if start > end:
             return
         mid = int(start + (end - start) / 2.0)
