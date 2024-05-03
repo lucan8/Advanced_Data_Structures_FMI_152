@@ -22,16 +22,16 @@ class Treap(Tree):
             else:
                 Treap_iterator = Treap_iterator.left
         return None
-    
+
     def insert(self, node : int) -> bool:
         ascendents_stack, new_node = self.__BSTInsert(node)
 
         if not new_node:
             return False
-        
+
         self.__bubbleUpPriority(ascendents_stack, new_node)
         return True
-    
+
     def remove(self, node : int) -> bool:
         parent_del_node, del_node = self.__findRemoveNode(node)
 
@@ -47,7 +47,7 @@ class Treap(Tree):
 
         return True
 
-    
+
     #Returns the node to be deleted and it's parent
     def __findRemoveNode(self, node : int) -> Tuple[Node, Node]:
         Treap_iterator = self.root
@@ -56,18 +56,18 @@ class Treap(Tree):
             if node > Treap_iterator.key: #Verifying if the node is in right subtree
                 if (Treap_iterator.right and Treap_iterator.right.key == node):
                     return Treap_iterator, Treap_iterator.right
-                
+
                 Treap_iterator = Treap_iterator.right #Going to the right subtree
             elif node < Treap_iterator.key: #Verifying if the node is in the left subtree
                 if (Treap_iterator.left and Treap_iterator.left.key == node):
                     return Treap_iterator, Treap_iterator.left
-                
+
                 Treap_iterator = Treap_iterator.left #Going to the left subtree
             else:
                  return None, Treap_iterator #Root
-            
+
         return None, None #Node not found
-    
+
     #Returns a stack of all ascendents, and the node that was inserted
     def __BSTInsert(self, node : int) -> Tuple[List[Node], Node]:
         new_node = Node(node, randint(int(self.MIN_RANDOM), int(self.MAX_RANDOM)))
@@ -75,7 +75,7 @@ class Treap(Tree):
         if not self.root: #If there is no root we create it
             self.root = new_node
             return None, new_node
-        
+
         Treap_iterator = self.root
         ascendents_stack = [] #Keeping all possible parents of the inserted node
 
@@ -86,13 +86,13 @@ class Treap(Tree):
                 if (not Treap_iterator.right): #Inserting node at right of current node
                     Treap_iterator.right = new_node
                     return ascendents_stack, new_node
-                
+
                 Treap_iterator = Treap_iterator.right #Going to the right subtree
             elif node < Treap_iterator.key: 
                 if (not Treap_iterator.left): #Inserting node at left of curr node
                     Treap_iterator.left = new_node
                     return ascendents_stack, new_node
-                
+
                 Treap_iterator = Treap_iterator.left #Going to the left subtree
             else: #No node gets inserted if it already exists
                 return None, None
@@ -116,7 +116,7 @@ class Treap(Tree):
 
             elif parent.left and parent.left.key == new_node.key: #Left child implies right rotation
                 new_child = self.__rightRotation(parent)
-            
+
             self.__fatherConnectionAfterRotation(grandparent, new_child)
 
     #Makes rotations in order to get the node to be a leaf and returns it's parent
@@ -130,12 +130,12 @@ class Treap(Tree):
                 new_parent = self.__leftRotation(del_node)
             else:
                 new_parent = self.__rightRotation(del_node)
-            
+
             self.__fatherConnectionAfterRotation(parent, new_parent)
             parent = new_parent
-            
+
         return parent
-            
+
     def __rightRotation(self, old_root : Node) -> Node:
         new_root = old_root.left
         new_root_right = new_root.right
@@ -153,7 +153,7 @@ class Treap(Tree):
         old_root.right = new_root_left
 
         return new_root
-    
+
     def __fatherConnectionAfterRotation(self, father_old_root : Node, new_root : Node):
         if father_old_root:
             if new_root.key > father_old_root.key:
@@ -170,25 +170,25 @@ class Treap(Tree):
             parent_del_node.left = None
         elif parent_del_node.right.key == del_node.key:
             parent_del_node.right = None
-    
+
     def getMin(self) -> int:
         Treap_iterator = self.root
         while (Treap_iterator.left):
             Treap_iterator = Treap_iterator.left
         return Treap_iterator.key
-    
+
     def getMax(self) -> int:
         Treap_iterator = self.root
         while (Treap_iterator.right):
             Treap_iterator = Treap_iterator.right
         return Treap_iterator.key
-    
+
     def getHeight(self, root : Node) -> int:
         if not root:
             return 0
-        
+
         return 1 + max(self.getHeight(root.right), self.getHeight(root.left))
-    
+
     def printTreapInfo(self):
         print(f"Treap height: {self.getHeight(self.root)}")
         print(f"Treap min elem: {self.getMin()}")
@@ -197,24 +197,6 @@ class Treap(Tree):
     def meetsRequirments(self):
         if not self.root:
             return True
-        
-        q = Queue()
-        q.put(self.root)
 
-        while not q.empty():
-            elem = q.get()
-
-            if elem.left:
-                if elem.left.key >= elem.key or elem.left.priority > elem.priority:
-                    return False
-                
-                q.put(elem.left)
-            
-            if elem.right:
-                if elem.right.key <= elem.key or elem.right.priority > elem.priority:
-                    return False
-                
-                q.put(elem.right)
-
-        return True
-    
+        # TODO: also check for priority
+        return self._is_ordered()

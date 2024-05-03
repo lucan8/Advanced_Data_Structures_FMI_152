@@ -100,13 +100,6 @@ class ScapegoatTree(Tree):
             scapegoat = scapegoat.parent
         return scapegoat
 
-    def _flatten(self, node: GoatNode, nodes):
-        if node == None:
-            return
-        self._flatten(node.left, nodes)
-        nodes.append(node)
-        self._flatten(node.right, nodes)
-
     def _build_tree_from_list(self, nodes, start: int, end: int):
         if start > end:
             return
@@ -186,22 +179,5 @@ class ScapegoatTree(Tree):
         if not self.root:
             return True
 
-        q = Queue()
-        q.put(self.root)
-
-        while not q.empty():
-            elem = q.get()
-
-            if elem.left:
-                if elem.left.key >= elem.key:
-                    return False
-
-                q.put(elem.left)
-
-            if elem.right:
-                if elem.right.key <= elem.key:
-                    return False
-
-                q.put(elem.right)
-        return True
+        return self._is_ordered()
 

@@ -37,6 +37,22 @@ class Tree:
     def __init__(self):
         self.root = None
 
+    def _flatten(self, node: Node, nodes):
+        if node == None:
+            return
+        self._flatten(node.left, nodes)
+        nodes.append(node)
+        self._flatten(node.right, nodes)
+
+    def _is_ordered(self) -> bool:
+        sorted_nodes = []
+        self._flatten(self.root, sorted_nodes)
+        for i in range(1, len(sorted_nodes)):
+            if sorted_nodes[i].key < sorted_nodes[i - 1].key:
+                return False
+        return True
+
+
     # Returns the node with key = node(arg)
     @abstractmethod
     def search(self, node: int) -> Node:
