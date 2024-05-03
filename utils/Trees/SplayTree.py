@@ -1,4 +1,5 @@
-from utils.Trees.Tree import Node
+from utils.Trees.Tree import Node, Tree
+
 
 def right_rotate(pivot):
     subTree = pivot.left
@@ -16,7 +17,9 @@ def left_rotate(pivot):
     return subTree
 
 
-class SplayTree:
+class SplayTree(Tree):
+    root = Node(-1)
+
     def splay(self, root, key):
         if not root or root.key == key:
             return root
@@ -55,10 +58,19 @@ class SplayTree:
 
             return not root.right and root or left_rotate(root)
 
-    def search(self, root, key):
+    def search(self, node):
+        return self.inner_search(self.root, node)
+
+    def insert(self, node):
+        return bool(self.inner_insert(self.root, node))
+
+    def remove(self, node):
+        return bool(self.inner_remove(self.root, node))
+
+    def inner_search(self, root, key):
         return self.splay(root, key)
 
-    def insert(self, root, key):
+    def inner_insert(self, root, key):
         if root is None:
             return Node(key)
 
@@ -73,6 +85,7 @@ class SplayTree:
             new_node.left = root.left
             root.left = None
 
+            self.root = new_node
             return new_node
 
         else:
@@ -81,9 +94,10 @@ class SplayTree:
             new_node.right = root.right
             root.right = None
 
+            self.root = new_node
             return new_node
 
-    def remove(self, root, key):
+    def inner_remove(self, root, key):
         if root is None:
             return root
 
@@ -99,4 +113,8 @@ class SplayTree:
             new_root = self.splay(root.left, key)
             new_root.right = root.right
 
+        self.root = new_root
         return new_root
+
+    def meetsRequirments(self) -> bool:
+        return True
