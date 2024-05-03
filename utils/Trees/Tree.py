@@ -37,7 +37,7 @@ class Tree:
     def __init__(self):
         self.root = None
 
-    def _flatten(self, node: Node, nodes):
+    def _flatten(self, node: Node, nodes: List[Node]):
         if node == None:
             return
         self._flatten(node.left, nodes)
@@ -51,7 +51,22 @@ class Tree:
             if sorted_nodes[i].key < sorted_nodes[i - 1].key:
                 return False
         return True
+    
+    def _isMaxHeap(self, root : Node):
+        if not root:
+            return -1
+        #Leaf node, will just return the value
+        if not root.right and not root.left:
+            return root.priority
+        
+        max_right = self._isMaxHeap(root.right)
+        max_left = self._isMaxHeap(root.left)
 
+        #If we've returned false so far or the maximum value from the subtrees is greater than root we return false
+        if max_right == False or max_left == False or max(max_right, max_left) > root.priority:
+            return False
+        
+        return root.priority
 
     # Returns the node with key = node(arg)
     @abstractmethod
