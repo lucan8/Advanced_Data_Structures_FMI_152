@@ -21,9 +21,9 @@ def main():
         # TestConfig(100_000_000, 1_000_000_000),
     ]
 
-    # test_generator.generate_test("Treaps/Treaps_insert", test_configs_treaps)
-    # test_generator.generate_test("Treaps/Treaps_search", test_configs_treaps)
-    # test_generator.generate_test("Treaps/Treaps_remove", test_configs_treaps)
+    test_generator.generate_test("Treaps/Treaps_insert", test_configs_treaps)
+    test_generator.generate_test("Treaps/Treaps_search", test_configs_treaps)
+    test_generator.generate_test("Treaps/Treaps_remove", test_configs_treaps)
 
     # The GOAT tests
     test_configs_scapegoat = [
@@ -36,9 +36,9 @@ def main():
         TestConfig(1_000_000, 420_690),
     ]
 
-    # test_generator.generate_test("Scapegoat/Scapegoat_insert", test_configs_scapegoat)
-    # test_generator.generate_test("Scapegoat/Scapegoat_search", test_configs_scapegoat)
-    # test_generator.generate_test("Scapegoat/Scapegoat_remove", test_configs_scapegoat)
+    test_generator.generate_test("Scapegoat/Scapegoat_insert", test_configs_scapegoat)
+    test_generator.generate_test("Scapegoat/Scapegoat_search", test_configs_scapegoat)
+    test_generator.generate_test("Scapegoat/Scapegoat_remove", test_configs_scapegoat)
 
     test_configs_splaytree = [
         TestConfig(10_000_000, 1_000_000),
